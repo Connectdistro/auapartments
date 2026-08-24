@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Placeholder domain — replace https://www.auapartments.example with the real production domain before publishing. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://www.auapartments.example/</loc></url>
+  <url><loc>https://www.auapartments.example/apartments</loc></url>
+  <url><loc>https://www.auapartments.example/locations</loc></url>
+  <url><loc>https://www.auapartments.example/about</loc></url>
+  <url><loc>https://www.auapartments.example/contact</loc></url>
+  <url><loc>https://www.auapartments.example/apartments/skyline-luxury-apartment</loc></url>
+  <url><loc>https://www.auapartments.example/apartments/harbour-views-residences</loc></url>
+  <url><loc>https://www.auapartments.example/apartments/riverside-loft</loc></url>
+  <url><loc>https://www.auapartments.example/apartments/botanic-gardens-apartment</loc></url>
+  <url><loc>https://www.auapartments.example/apartments/bondi-beach-studio</loc></url>
+  <url><loc>https://www.auapartments.example/apartments/story-bridge-apartment</loc></url>
+  <url><loc>https://www.auapartments.example/apartments/docklands-waterfront</loc></url>
+  <url><loc>https://www.auapartments.example/apartments/kirribilli-heritage-apartment</loc></url>
+  <url><loc>https://www.auapartments.example/privacy-policy</loc></url>
+  <url><loc>https://www.auapartments.example/terms-of-service</loc></url>
+  <url><loc>https://www.auapartments.example/refund-policy</loc></url>
+  <url><loc>https://www.auapartments.example/shipping-policy</loc></url>
+  <url><loc>https://www.auapartments.example/cancellation-policy</loc></url>
+</urlset>
