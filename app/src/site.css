@@ -1357,6 +1357,13 @@ img.image-placeholder {
   }
 }
 
+.not-found-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 24px;
+}
+
 /* Products listing page */
 
 /* Page hero band — animated full-bleed hero used on Explore/Stays/Host pages */

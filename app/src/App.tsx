@@ -18,6 +18,7 @@ const TermsOfServicePage = lazy(() => import('./pages/legal/TermsOfServicePage')
 const RefundPolicyPage = lazy(() => import('./pages/legal/RefundPolicyPage'));
 const ShippingPolicyPage = lazy(() => import('./pages/legal/ShippingPolicyPage'));
 const CancellationPolicyPage = lazy(() => import('./pages/legal/CancellationPolicyPage'));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
             <Route path="refund-policy" element={<RefundPolicyPage />} />
             <Route path="shipping-policy" element={<ShippingPolicyPage />} />
             <Route path="cancellation-policy" element={<CancellationPolicyPage />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Route>
         </Routes>
       </Suspense>

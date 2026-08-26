@@ -104,7 +104,10 @@ function matchesGuests(maxGuests: number, selected: number[]): boolean {
 }
 
 export default function ApartmentsPage() {
-  useDocumentTitle('Apartments');
+  useDocumentTitle(
+    'Apartments',
+    'Browse verified apartments and short stays for rent across Australia, with transparent pricing and photos.',
+  );
   const [searchParams] = useSearchParams();
   const cities = getCities();
 

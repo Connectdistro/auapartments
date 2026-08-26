@@ -27,7 +27,10 @@ const TRUST_ITEMS = [
 const ENQUIRY_TYPES = ['General enquiry', 'Book an inspection', 'Application support', 'Existing tenancy', 'Other'];
 
 export default function ContactPage() {
-  useDocumentTitle('Contact');
+  useDocumentTitle(
+    'Contact',
+    'Get in touch with the AUSTAY team for questions about apartments, inspections, or an existing enquiry.',
+  );
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (event: FormEvent) => {

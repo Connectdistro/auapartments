@@ -12,7 +12,7 @@ type Mode = 'signin' | 'signup';
 const TAB_SPRING = { type: 'spring', stiffness: 380, damping: 34 } as const;
 
 export default function SignInPage() {
-  useDocumentTitle('Sign In');
+  useDocumentTitle('Sign In', 'Sign in or create an AUSTAY account to search stays and manage your bookings.');
   const navigate = useNavigate();
   const location = useLocation();
   const { signIn, signUp } = useAuth();

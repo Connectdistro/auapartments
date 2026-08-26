@@ -40,7 +40,10 @@ const VALUES = [
 ];
 
 export default function AboutPage() {
-  useDocumentTitle('About');
+  useDocumentTitle(
+    'About',
+    "Learn about AUSTAY's mission to make finding a quality rental home in Australia easier, faster, and more personal.",
+  );
 
   return (
     <div className="about-page">

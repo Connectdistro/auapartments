@@ -5,7 +5,7 @@ import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import PropertyCard from '../components/PropertyCard';
 
 export default function SavedApartmentsPage() {
-  useDocumentTitle('Saved apartments');
+  useDocumentTitle('Saved apartments', "Apartments you've saved on AUSTAY, stored on this device.");
   const { favorites } = useFavorites();
   const saved = PROPERTIES.filter((property) => favorites.has(property.id));
 

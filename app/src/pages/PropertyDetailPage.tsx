@@ -74,7 +74,10 @@ export default function PropertyDetailPage() {
   const { openEnquiry } = usePropertyEnquiry();
   const [copied, setCopied] = useState(false);
   const [shared, setShared] = useState(false);
-  useDocumentTitle(property ? property.title : 'Apartment not found');
+  useDocumentTitle(
+    property ? property.title : 'Apartment not found',
+    property ? `${property.shortDescription} — ${property.suburb}, ${property.state}.` : undefined,
+  );
 
   if (!property) {
     return (

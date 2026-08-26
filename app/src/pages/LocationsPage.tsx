@@ -36,7 +36,10 @@ const WHY_LOCATION = [
 ];
 
 export default function LocationsPage() {
-  useDocumentTitle('Locations');
+  useDocumentTitle(
+    'Locations',
+    "Explore premium stays in Australia's most sought-after locations, from Sydney and Melbourne to Perth and beyond.",
+  );
   const navigate = useNavigate();
 
   const [location, setLocation] = useState('any');

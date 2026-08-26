@@ -14,7 +14,10 @@ import { useDocumentTitle } from '../hooks/useDocumentTitle';
 const RoomViewer = lazy(() => import('../components/RoomViewer'));
 
 export default function Home() {
-  useDocumentTitle('Find Your Next Place to Live');
+  useDocumentTitle(
+    'Find Your Next Place to Live',
+    "Beautiful apartments and short stays across Australia's most desirable cities. Browse, enquire, and book with AUSTAY.",
+  );
   const featured = PROPERTIES.filter((property) => property.featured).slice(0, 4);
 
   return (

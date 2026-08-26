@@ -11,7 +11,10 @@ const STEPS = [
 ];
 
 export default function HostPage() {
-  useDocumentTitle('Become a Host');
+  useDocumentTitle(
+    'Become a Host',
+    'Turn your apartment into income. List your space, get verified, and start earning with AUSTAY.',
+  );
 
   return (
     <div className="host-page">

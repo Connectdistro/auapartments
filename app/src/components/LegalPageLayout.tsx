@@ -10,7 +10,7 @@ interface LegalPageLayoutProps {
 }
 
 export default function LegalPageLayout({ eyebrow, title, updated, children }: LegalPageLayoutProps) {
-  useDocumentTitle(title);
+  useDocumentTitle(title, `Read AUSTAY's ${title.toLowerCase()}, last updated ${updated}.`);
   return (
     <div className="legal-page">
       <div className="page-hero">
