@@ -59,7 +59,7 @@ interface LargePageHeroProps {
   subtitle?: string;
   children?: ReactNode;
   reduced: boolean | null;
-  bgVariant: 'particles' | 'network';
+  bgVariant: 'particles' | 'network' | 'routes' | 'skyline' | 'bloom';
 }
 
 /** Large hero variant — same pinned scroll-scrub behavior as the homepage hero
