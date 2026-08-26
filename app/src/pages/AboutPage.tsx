@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import Reveal from '../components/Reveal';
+import PageHero from '../components/PageHero';
 import ImagePlaceholder from '../components/ImagePlaceholder';
 import { CONTACT } from '../data/contact';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
@@ -8,7 +9,7 @@ import { ArrowRightIcon, CheckIcon, PhoneIcon, QualityIcon, HandshakeIcon, Heart
 const TIMELINE = [
   {
     stage: 'Getting Started',
-    body: 'AuApartments began with a simple idea: make finding a quality rental home in Australia easier, faster, and more personal.',
+    body: 'AUSTAY began with a simple idea: make finding a quality rental home in Australia easier, faster, and more personal.',
   },
   {
     stage: 'Expanding Our Reach',
@@ -43,24 +44,24 @@ export default function AboutPage() {
 
   return (
     <div className="about-page">
-      <div className="page-hero">
-        <span className="eyebrow">About AuApartments</span>
-        <h1>More Than Apartments. Better Living.</h1>
-        <p>
-          At AuApartments, we believe renting is more than finding a place to live — it's about finding a place that
-          feels like home.
-        </p>
+      <PageHero
+        eyebrow="About AUSTAY"
+        title="More Than Apartments. Better Living."
+        subtitle="At AUSTAY, we believe renting is more than finding a place to live — it's about finding a place that feels like home."
+        size="large"
+      >
         <Link to="/apartments" className="btn-primary about-hero-cta">
           Find Your Next Apartment <ArrowRightIcon size={16} />
         </Link>
-      </div>
+      </PageHero>
+      <div className="page-hero-divider" />
 
       <Reveal className="about-history page-container">
         <div className="about-history-text">
           <span className="eyebrow">Our Story</span>
           <h2>Our History</h2>
           <p>
-            AuApartments was founded with a simple idea: to make finding a quality rental home in Australia easier,
+            AUSTAY was founded with a simple idea: to make finding a quality rental home in Australia easier,
             faster, and more personal.
           </p>
           <p>

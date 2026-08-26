@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { CONTACT, HEAD_OFFICE, OFFICE_HOURS, OTHER_OFFICES } from '../data/contact';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 import ImagePlaceholder from '../components/ImagePlaceholder';
+import PageHero from '../components/PageHero';
+import Reveal from '../components/Reveal';
 import {
   ChatIcon,
   SupportIcon,
@@ -39,59 +41,64 @@ export default function ContactPage() {
 
   return (
     <div className="contact-page">
-      <div className="page-hero contact-hero">
-        <div className="contact-hero-text">
-          <h1>We're Here to Help</h1>
-          <p>
-            Have a question about our apartments or need assistance with your enquiry? Get in touch with our
-            friendly team.
-          </p>
+      <PageHero
+        eyebrow="Contact"
+        title="We're Here to Help"
+        subtitle="Have a question about our apartments or need assistance with your enquiry? Get in touch with our friendly team."
+        size="large"
+        bgVariant="network"
+      >
+        <a href="#contact-form" className="btn-primary">
+          Send a Message →
+        </a>
+      </PageHero>
+      <div className="page-hero-divider" />
 
-          <div className="contact-trust-row">
-            {TRUST_ITEMS.map((item) => (
-              <div className="contact-trust-item" key={item.title}>
-                <item.icon size={22} />
-                <span>{item.title}</span>
-                <p>{item.body}</p>
-              </div>
-            ))}
+      <Reveal className="contact-trust-row page-container">
+        {TRUST_ITEMS.map((item) => (
+          <div className="contact-trust-item" key={item.title}>
+            <item.icon size={22} />
+            <span>{item.title}</span>
+            <p>{item.body}</p>
           </div>
-        </div>
+        ))}
+      </Reveal>
 
-        <div className="contact-hero-media">
-          <ImagePlaceholder label="AuApartments office" />
+      <div className="contact-quick-section page-container">
+        <Reveal className="contact-quick-media">
+          <ImagePlaceholder label="AUSTAY office" src="/contact-office.png" />
+        </Reveal>
 
-          <div className="contact-quick-card">
-            <div className="contact-quick-item">
-              <PhoneIcon size={18} />
-              <div>
-                <strong>Call Us</strong>
-                <a href={`tel:${CONTACT.phone}`}>{CONTACT.phoneDisplay}</a>
-                <span>{OFFICE_HOURS.weekdays}</span>
-              </div>
-            </div>
-            <div className="contact-quick-item">
-              <MailIcon size={18} />
-              <div>
-                <strong>Email Us</strong>
-                <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
-                <span>We'll respond within 24 hours</span>
-              </div>
-            </div>
-            <div className="contact-quick-item">
-              <ChatIcon size={18} />
-              <div>
-                <strong>Live Chat</strong>
-                <a href="#contact-form">Start a conversation →</a>
-                <span>{OFFICE_HOURS.weekdays}</span>
-              </div>
+        <Reveal className="contact-quick-card" delay={0.1}>
+          <div className="contact-quick-item">
+            <PhoneIcon size={18} />
+            <div>
+              <strong>Call Us</strong>
+              <a href={`tel:${CONTACT.phone}`}>{CONTACT.phoneDisplay}</a>
+              <span>{OFFICE_HOURS.weekdays}</span>
             </div>
           </div>
-        </div>
+          <div className="contact-quick-item">
+            <MailIcon size={18} />
+            <div>
+              <strong>Email Us</strong>
+              <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
+              <span>We'll respond within 24 hours</span>
+            </div>
+          </div>
+          <div className="contact-quick-item">
+            <ChatIcon size={18} />
+            <div>
+              <strong>Live Chat</strong>
+              <a href="#contact-form">Start a conversation →</a>
+              <span>{OFFICE_HOURS.weekdays}</span>
+            </div>
+          </div>
+        </Reveal>
       </div>
 
       <div className="contact-main-grid page-container">
-        <div className="contact-form-card" id="contact-form">
+        <Reveal className="contact-form-card" id="contact-form">
           <h2>Send Us a Message</h2>
           <p className="contact-form-lead">Fill out the form below and we'll get back to you as soon as possible.</p>
 
@@ -151,74 +158,93 @@ export default function ContactPage() {
               </form>
             </>
           )}
-        </div>
+        </Reveal>
 
-        <div className="contact-info-panel">
-          <h2>Contact Information</h2>
-          <div className="contact-info-row">
-            <MapPinIcon size={17} />
-            <div>
-              <strong>Head Office</strong>
-              {HEAD_OFFICE.addressLines.map((line) => (
-                <span key={line}>{line}</span>
-              ))}
-            </div>
-          </div>
-          <div className="contact-info-row">
-            <PhoneIcon size={17} />
-            <div>
-              <strong>Phone</strong>
-              <span>{CONTACT.phoneDisplay}</span>
-            </div>
-          </div>
-          <div className="contact-info-row">
-            <MailIcon size={17} />
-            <div>
-              <strong>Email</strong>
-              <span>{CONTACT.email}</span>
-            </div>
-          </div>
-          <div className="contact-info-row">
-            <ClockIcon size={17} />
-            <div>
-              <strong>Office Hours</strong>
-              <span>{OFFICE_HOURS.weekdays}</span>
-              <span>{OFFICE_HOURS.weekend}</span>
-            </div>
-          </div>
-        </div>
+        <div className="contact-sidebar">
+          <div className="contact-sidebar-sticky">
+            <Reveal className="contact-info-panel" delay={0.08}>
+              <h2>Contact Information</h2>
+              <div className="contact-info-row">
+                <MapPinIcon size={17} />
+                <div>
+                  <strong>Head Office</strong>
+                  {HEAD_OFFICE.addressLines.map((line) => (
+                    <span key={line}>{line}</span>
+                  ))}
+                </div>
+              </div>
+              <div className="contact-info-row">
+                <PhoneIcon size={17} />
+                <div>
+                  <strong>Phone</strong>
+                  <span>{CONTACT.phoneDisplay}</span>
+                </div>
+              </div>
+              <div className="contact-info-row">
+                <MailIcon size={17} />
+                <div>
+                  <strong>Email</strong>
+                  <span>{CONTACT.email}</span>
+                </div>
+              </div>
+              <div className="contact-info-row">
+                <ClockIcon size={17} />
+                <div>
+                  <strong>Office Hours</strong>
+                  <span>{OFFICE_HOURS.weekdays}</span>
+                  <span>{OFFICE_HOURS.weekend}</span>
+                </div>
+              </div>
+            </Reveal>
 
-        <div className="contact-map-panel">
-          <div className="location-map-thumb">
-            <ImagePlaceholder label="Head office map" />
+            <Reveal className="contact-map-panel" delay={0.16}>
+              <div className="location-map-thumb">
+                <ImagePlaceholder label="Head office map" />
+              </div>
+              <a href={mapsUrl} target="_blank" rel="noreferrer" className="btn-secondary contact-directions-btn">
+                Get Directions
+              </a>
+            </Reveal>
           </div>
-          <a href={mapsUrl} target="_blank" rel="noreferrer" className="btn-secondary contact-directions-btn">
-            Get Directions
-          </a>
         </div>
       </div>
 
       <div className="contact-offices-row page-container">
-        <div className="contact-offices-heading">
+        <Reveal className="contact-offices-heading">
           <h2>Other Office Locations</h2>
           <p>We have team members across Australia to help you find your next home.</p>
-        </div>
+        </Reveal>
         <div className="contact-offices-grid">
-          {OTHER_OFFICES.map((office) => (
-            <div className="contact-office-card" key={office.city}>
-              <BuildingIcon size={22} />
-              <div>
-                <strong>{office.city}</strong>
-                {office.addressLines.map((line) => (
-                  <span key={line}>{line}</span>
-                ))}
-                <Link to={`/apartments?location=${encodeURIComponent(office.city)}`}>
-                  View Apartments <ArrowRightIcon size={12} />
-                </Link>
+          {OTHER_OFFICES.map((office, index) => (
+            <Reveal key={office.city} delay={index * 0.08}>
+              <div className="contact-office-card">
+                <BuildingIcon size={22} />
+                <div>
+                  <strong>{office.city}</strong>
+                  {office.addressLines.map((line) => (
+                    <span key={line}>{line}</span>
+                  ))}
+                  <Link to={`/apartments?location=${encodeURIComponent(office.city)}`}>
+                    View Apartments <ArrowRightIcon size={12} />
+                  </Link>
+                </div>
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
+      </div>
+
+      <div className="contact-closing-cta-wrap page-container">
+        <Reveal className="final-cta">
+          <ChatIcon size={26} className="final-cta-icon" />
+          <div className="final-cta-copy">
+            <h2>Still Have Questions?</h2>
+            <p>Our team typically responds within 24 hours — reach out any time.</p>
+          </div>
+          <a href="#contact-form" className="btn-primary final-cta-button">
+            Send a Message →
+          </a>
+        </Reveal>
       </div>
     </div>
   );

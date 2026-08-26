@@ -1,14 +1,15 @@
-import { useState, type FormEvent } from 'react';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { PROPERTIES, type PropertyType } from '../data/properties';
 import { POPULAR_LOCATIONS } from '../data/locations';
 import Reveal from '../components/Reveal';
+import PageHero from '../components/PageHero';
 import LocationCard from '../components/LocationCard';
 import LocationsMapPanel from '../components/LocationsMapPanel';
 import { BriefcaseIcon, CoffeeIcon, CarIcon, ShieldIcon, MapPinIcon, BellIcon } from '../components/icons';
 import { useDocumentTitle } from '../hooks/useDocumentTitle';
 
-type PriceBand = 'any' | 'under-500' | '500-800' | '800-1200' | '1200-plus';
+type PriceBand = 'any' | 'under-150' | '150-250' | '250-400' | '400-plus';
 type PropertyTypeFilter = 'any' | PropertyType;
 
 const WHY_LOCATION = [
@@ -44,30 +45,65 @@ export default function LocationsPage() {
   const [bedrooms, setBedrooms] = useState('any');
   const [notifyRequested, setNotifyRequested] = useState(false);
 
+  const mainRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+  const [whyPanelHeight, setWhyPanelHeight] = useState<number | undefined>(undefined);
+  const [sidebarOffset, setSidebarOffset] = useState<number | undefined>(undefined);
+
+  useEffect(() => {
+    const mainEl = mainRef.current;
+    const gridEl = gridRef.current;
+    if (!mainEl || !gridEl) return;
+    const query = window.matchMedia('(min-width: 961px)');
+
+    const update = () => {
+      if (!query.matches) {
+        setWhyPanelHeight(undefined);
+        setSidebarOffset(undefined);
+        return;
+      }
+      setWhyPanelHeight(gridEl.getBoundingClientRect().height);
+      setSidebarOffset(gridEl.getBoundingClientRect().top - mainEl.getBoundingClientRect().top);
+    };
+
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(gridEl);
+    observer.observe(mainEl);
+    query.addEventListener('change', update);
+    return () => {
+      observer.disconnect();
+      query.removeEventListener('change', update);
+    };
+  }, []);
+
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     const params = new URLSearchParams();
     if (location !== 'any') params.set('location', location);
     if (propertyType !== 'any') params.set('propertyType', propertyType);
     if (bedrooms !== 'any') params.set('bedrooms', bedrooms);
-    if (priceBand === 'under-500') params.set('maxPrice', '500');
-    else if (priceBand === '500-800') {
-      params.set('minPrice', '500');
-      params.set('maxPrice', '800');
-    } else if (priceBand === '800-1200') {
-      params.set('minPrice', '800');
-      params.set('maxPrice', '1200');
-    } else if (priceBand === '1200-plus') params.set('minPrice', '1200');
+    if (priceBand === 'under-150') params.set('maxPrice', '150');
+    else if (priceBand === '150-250') {
+      params.set('minPrice', '150');
+      params.set('maxPrice', '250');
+    } else if (priceBand === '250-400') {
+      params.set('minPrice', '250');
+      params.set('maxPrice', '400');
+    } else if (priceBand === '400-plus') params.set('minPrice', '400');
     const query = params.toString();
     navigate(query ? `/apartments?${query}` : '/apartments');
   };
 
   return (
     <div className="locations-page">
-      <div className="page-hero">
-        <h1>Find Your New Neighbourhood</h1>
-        <p>Explore premium apartments in Australia's most sought-after locations.</p>
-
+      <PageHero
+        eyebrow="Explore"
+        title="Find Your New Neighbourhood"
+        subtitle="Explore premium stays in Australia's most sought-after locations."
+        size="large"
+        bgVariant="routes"
+      >
         <form className="hero-search locations-search" onSubmit={handleSubmit}>
           <label className="hero-search-field">
             <span>
@@ -96,10 +132,10 @@ export default function LocationsPage() {
             <span>Price Range</span>
             <select value={priceBand} onChange={(event) => setPriceBand(event.target.value as PriceBand)}>
               <option value="any">Any price</option>
-              <option value="under-500">Under $500/wk</option>
-              <option value="500-800">$500 – $800/wk</option>
-              <option value="800-1200">$800 – $1,200/wk</option>
-              <option value="1200-plus">$1,200+/wk</option>
+              <option value="under-150">Under $150/night</option>
+              <option value="150-250">$150 – $250/night</option>
+              <option value="250-400">$250 – $400/night</option>
+              <option value="400-plus">$400+/night</option>
             </select>
           </label>
           <label className="hero-search-field">
@@ -115,62 +151,74 @@ export default function LocationsPage() {
             Search Locations
           </button>
         </form>
-      </div>
+      </PageHero>
+      <div className="page-hero-divider" />
 
       <div className="locations-layout page-container">
-        <div className="locations-main">
-          <div className="products-section-heading">
+        <div className="locations-main" ref={mainRef}>
+          <Reveal className="products-section-heading">
             <h2>Popular Locations</h2>
-          </div>
-
-          <Reveal className="locations-grid">
-            {POPULAR_LOCATIONS.map((loc) => {
-              const count = PROPERTIES.filter((property) => property.city === loc.city).length;
-              return <LocationCard key={loc.city} city={loc.city} state={loc.state} count={count} />;
-            })}
           </Reveal>
+
+          <div className="locations-grid" ref={gridRef}>
+            {POPULAR_LOCATIONS.map((loc, index) => {
+              const count = PROPERTIES.filter((property) => property.city === loc.city).length;
+              return (
+                <Reveal key={loc.city} delay={index * 0.06}>
+                  <LocationCard city={loc.city} state={loc.state} count={count} />
+                </Reveal>
+              );
+            })}
+          </div>
 
           <div className="locations-view-all">
             <Link to="/apartments" className="btn-secondary">
               View All Locations →
             </Link>
           </div>
-
-          <div className="apartments-notify-banner">
-            <BellIcon size={22} />
-            <div className="apartments-notify-copy">
-              <strong>Can't find what you're looking for?</strong>
-              <p>We have new apartments coming to more locations soon.</p>
-            </div>
-            {notifyRequested ? (
-              <span className="apartments-notify-confirm">Notified ✓</span>
-            ) : (
-              <button type="button" className="btn-primary" onClick={() => setNotifyRequested(true)}>
-                Get Notified
-              </button>
-            )}
-          </div>
         </div>
 
-        <aside className="locations-sidebar">
-          <div className="why-location-panel">
+        <Reveal
+          className="locations-sidebar"
+          style={sidebarOffset ? { marginTop: sidebarOffset } : undefined}
+        >
+          <aside className="why-location-panel" style={whyPanelHeight ? { height: whyPanelHeight } : undefined}>
             <h3>Why Location Matters</h3>
-            {WHY_LOCATION.map((item) => (
-              <div className="why-location-item" key={item.title}>
-                <item.icon size={20} />
-                <div>
-                  <h4>{item.title}</h4>
-                  <p>{item.body}</p>
+            <div className="why-location-items">
+              {WHY_LOCATION.map((item) => (
+                <div className="why-location-item" key={item.title}>
+                  <item.icon size={20} />
+                  <div>
+                    <h4>{item.title}</h4>
+                    <p>{item.body}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          </aside>
 
           <div className="explore-map-panel">
             <h3>Explore on Map</h3>
             <LocationsMapPanel />
           </div>
-        </aside>
+        </Reveal>
+      </div>
+
+      <div className="page-container locations-notify-wrap">
+        <Reveal className="apartments-notify-banner">
+          <BellIcon size={22} />
+          <div className="apartments-notify-copy">
+            <strong>Can't find what you're looking for?</strong>
+            <p>We have new stays coming to more locations soon.</p>
+          </div>
+          {notifyRequested ? (
+            <span className="apartments-notify-confirm">Notified ✓</span>
+          ) : (
+            <button type="button" className="btn-primary" onClick={() => setNotifyRequested(true)}>
+              Get Notified
+            </button>
+          )}
+        </Reveal>
       </div>
     </div>
   );

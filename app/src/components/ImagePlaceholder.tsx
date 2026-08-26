@@ -1,9 +1,14 @@
 interface ImagePlaceholderProps {
   label: string;
   className?: string;
+  src?: string;
 }
 
-export default function ImagePlaceholder({ label, className = '' }: ImagePlaceholderProps) {
+export default function ImagePlaceholder({ label, className = '', src }: ImagePlaceholderProps) {
+  if (src) {
+    return <img src={src} alt={label} className={`image-placeholder ${className}`} />;
+  }
+
   return (
     <div className={`image-placeholder ${className}`}>
       <svg className="image-placeholder-icon" viewBox="0 0 24 24" width="30" height="30" aria-hidden="true">

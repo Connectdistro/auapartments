@@ -4,16 +4,63 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#0D1117" />
+    <meta name="theme-color" content="#F5F3EE" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&display=swap"
       rel="stylesheet"
     />
-    <title>AuApartments</title>
+    <title>AUSTAY</title>
+    <style>
+      #site-loader {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f5f3ee;
+        transition: opacity 0.4s ease;
+      }
+
+      #site-loader.is-hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      #site-loader svg {
+        width: 34px;
+        height: 34px;
+        color: #3f5744;
+        animation: site-loader-pulse 1.1s ease-in-out infinite;
+      }
+
+      @keyframes site-loader-pulse {
+        0%,
+        100% {
+          opacity: 0.35;
+          transform: scale(0.92);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        #site-loader svg {
+          animation: none;
+        }
+      }
+    </style>
   </head>
   <body>
+    <div id="site-loader" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+        <path d="M12 2 22 20H2L12 2Z" fill="currentColor" stroke="none" />
+      </svg>
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

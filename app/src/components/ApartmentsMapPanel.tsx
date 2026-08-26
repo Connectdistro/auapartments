@@ -28,8 +28,8 @@ export default function ApartmentsMapPanel({ properties, variant = 'sidebar' }: 
             className="apartments-map-pin"
             style={pinPosition(property.id)}
           >
-            ${property.weeklyRent}
-            <span>p/w</span>
+            ${property.pricePerNight}
+            <span>/night</span>
           </Link>
         ))}
       </div>

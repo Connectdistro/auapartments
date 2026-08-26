@@ -5,7 +5,7 @@ export default function ShippingPolicyPage() {
     <LegalPageLayout eyebrow="Legal" title="Shipping Policy" updated="22 August 2026">
       <h2>1. Not applicable</h2>
       <p>
-        AuApartments advertises rental properties and does not sell or ship any physical goods. No items are
+        AUSTAY advertises rental properties and does not sell or ship any physical goods. No items are
         posted or delivered as part of using this site, so a shipping policy does not apply to our services.
       </p>
 

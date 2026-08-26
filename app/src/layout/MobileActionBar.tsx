@@ -10,7 +10,7 @@ const TABS = [
   },
   {
     to: '/apartments',
-    label: 'Apartments',
+    label: 'Stays',
     icon: (
       <path
         d="M4 21V9l8-5 8 5v12h-5v-6H9v6H4Z"

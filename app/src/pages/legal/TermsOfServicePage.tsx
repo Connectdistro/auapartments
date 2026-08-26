@@ -6,13 +6,13 @@ export default function TermsOfServicePage() {
     <LegalPageLayout eyebrow="Legal" title="Terms of Service" updated="22 August 2026">
       <h2>1. Acceptance of terms</h2>
       <p>
-        By using the AuApartments website, you agree to these Terms of Service. If you do not agree, please do not
+        By using the AUSTAY website, you agree to these Terms of Service. If you do not agree, please do not
         use the site.
       </p>
 
-      <h2>2. What AuApartments is</h2>
+      <h2>2. What AUSTAY is</h2>
       <p>
-        AuApartments advertises apartments available for rent across Australia and helps prospective tenants
+        AUSTAY advertises apartments available for rent across Australia and helps prospective tenants
         enquire about, inspect, and apply for a property. Submitting an enquiry through this site does not itself
         create a tenancy — a tenancy is only formed once a formal rental application and lease agreement are
         completed with {CONTACT.businessName} or the relevant property manager.
@@ -35,7 +35,7 @@ export default function TermsOfServicePage() {
       <h2>5. Intellectual property</h2>
       <p>
         Photography, floor plans, and descriptions published on this site remain the property of{' '}
-        {CONTACT.businessName} or the relevant property owner. The AuApartments name, logo, and site design are the
+        {CONTACT.businessName} or the relevant property owner. The AUSTAY name, logo, and site design are the
         property of {CONTACT.businessName}.
       </p>
 

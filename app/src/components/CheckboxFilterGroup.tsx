@@ -1,3 +1,5 @@
+import FilterAccordionSection from './FilterAccordionSection';
+
 interface CheckboxOption<T> {
   value: T;
   label: string;
@@ -22,8 +24,7 @@ export default function CheckboxFilterGroup<T extends string | number>({
   };
 
   return (
-    <div className="filter-group">
-      <span className="filter-label">{label}</span>
+    <FilterAccordionSection label={label}>
       <div className="filter-checkbox-list">
         <label className="filter-checkbox">
           <input type="checkbox" checked={selected.length === 0} onChange={() => onChange([])} />
@@ -36,6 +37,6 @@ export default function CheckboxFilterGroup<T extends string | number>({
           </label>
         ))}
       </div>
-    </div>
+    </FilterAccordionSection>
   );
 }

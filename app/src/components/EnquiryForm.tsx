@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import type { Property } from '../data/properties';
-import { formatWeeklyRent } from '../data/properties';
+import { formatNightlyRate } from '../data/properties';
 
 interface EnquiryFormProps {
   property: Property;
@@ -12,11 +12,13 @@ export default function EnquiryForm({ property, onSubmitted }: EnquiryFormProps)
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [moveInDate, setMoveInDate] = useState('');
-  const [occupants, setOccupants] = useState('1');
+  const [checkIn, setCheckIn] = useState('');
+  const [checkOut, setCheckOut] = useState('');
+  const [guests, setGuests] = useState('1');
   const [hasPets, setHasPets] = useState(false);
-  const [isEmployed, setIsEmployed] = useState(false);
   const [message, setMessage] = useState('');
+
+  const guestOptions = Array.from({ length: property.maxGuests }, (_, i) => String(i + 1));
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
@@ -27,10 +29,10 @@ export default function EnquiryForm({ property, onSubmitted }: EnquiryFormProps)
   if (submitted) {
     return (
       <div className="modal-success">
-        <h3>Enquiry sent</h3>
+        <h3>Booking request sent</h3>
         <p>
-          Thanks{name ? `, ${name}` : ''} — we&apos;ve received your enquiry about {property.title} (
-          {formatWeeklyRent(property.weeklyRent)}). The property manager will be in touch shortly.
+          Thanks{name ? `, ${name}` : ''} — we&apos;ve received your request to book {property.title} (
+          {formatNightlyRate(property.pricePerNight)}). The host will confirm availability shortly.
         </p>
       </div>
     );
@@ -66,13 +68,17 @@ export default function EnquiryForm({ property, onSubmitted }: EnquiryFormProps)
       </div>
       <div className="enquiry-form-row">
         <label>
-          Preferred Move-in Date
-          <input type="date" value={moveInDate} onChange={(event) => setMoveInDate(event.target.value)} />
+          Check-in
+          <input required type="date" value={checkIn} onChange={(event) => setCheckIn(event.target.value)} />
         </label>
         <label>
-          Number of Occupants
-          <select value={occupants} onChange={(event) => setOccupants(event.target.value)}>
-            {['1', '2', '3', '4', '5', '6+'].map((n) => (
+          Check-out
+          <input required type="date" value={checkOut} onChange={(event) => setCheckOut(event.target.value)} />
+        </label>
+        <label>
+          Guests
+          <select value={guests} onChange={(event) => setGuests(event.target.value)}>
+            {guestOptions.map((n) => (
               <option key={n} value={n}>
                 {n}
               </option>
@@ -86,21 +92,17 @@ export default function EnquiryForm({ property, onSubmitted }: EnquiryFormProps)
           rows={3}
           value={message}
           onChange={(event) => setMessage(event.target.value)}
-          placeholder="Tell us a little about yourself..."
+          placeholder="Tell the host a little about your stay..."
         />
       </label>
       <div className="modal-checkbox-row">
         <label className="modal-checkbox">
           <input type="checkbox" checked={hasPets} onChange={(event) => setHasPets(event.target.checked)} />
-          Pets (optional)
-        </label>
-        <label className="modal-checkbox">
-          <input type="checkbox" checked={isEmployed} onChange={(event) => setIsEmployed(event.target.checked)} />
-          Employment Status (optional)
+          Travelling with pets (optional)
         </label>
       </div>
       <button type="submit" className="btn-primary enquiry-form-submit">
-        Send Enquiry →
+        Request to Book →
       </button>
       <p className="enquiry-form-note">We&apos;ll be in touch within 24 hours.</p>
     </form>

@@ -6,7 +6,7 @@ export default function RefundPolicyPage() {
     <LegalPageLayout eyebrow="Legal" title="Refund Policy" updated="22 August 2026">
       <h2>1. Overview</h2>
       <p>
-        AuApartments does not charge a fee to browse listings, submit an enquiry, or apply for a property. This
+        AUSTAY does not charge a fee to browse listings, submit an enquiry, or apply for a property. This
         policy explains the two situations where money changes hands before a lease begins: holding deposits and
         rental bonds.
       </p>

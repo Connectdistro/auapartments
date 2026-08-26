@@ -6,7 +6,7 @@ export default function PrivacyPolicyPage() {
     <LegalPageLayout eyebrow="Legal" title="Privacy Policy" updated="22 August 2026">
       <h2>1. Who we are</h2>
       <p>
-        {CONTACT.businessName} ("AuApartments", "we", "us") operates the AuApartments website, which advertises
+        {CONTACT.businessName} ("AUSTAY", "we", "us") operates the AUSTAY website, which advertises
         rental apartments across Australia. This policy explains what personal information we collect, how we use
         it, and the choices you have.
       </p>

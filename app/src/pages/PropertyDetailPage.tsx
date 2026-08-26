@@ -18,6 +18,7 @@ import {
   CheckIcon,
   ExternalLinkIcon,
   ShareIcon,
+  StarIcon,
   LiftIcon,
   QualityIcon,
   InfoIcon,
@@ -94,15 +95,15 @@ export default function PropertyDetailPage() {
   const detailRows: { icon: typeof AcIcon; label: string; value: string }[] = [
     { icon: QualityIcon, label: 'Property Type', value: property.propertyType },
     { icon: CheckIcon, label: 'Furnished', value: property.furnished ? 'Furnished' : 'Unfurnished' },
-    { icon: CalendarIcon, label: 'Lease Term', value: property.leaseTerms?.[0] ?? '—' },
+    { icon: CalendarIcon, label: 'Minimum Stay', value: property.leaseTerms?.[0] ?? '—' },
     { icon: InfoIcon, label: 'Pet Policy', value: property.petPolicy ?? 'Upon application' },
     { icon: AreaIcon, label: 'Floor Level', value: property.floorLevel !== undefined ? String(property.floorLevel) : '—' },
     { icon: LiftIcon, label: 'Lift Access', value: property.liftAccess ? 'Yes' : 'No' },
     { icon: CalendarIcon, label: 'Building Year', value: property.buildingYear !== undefined ? String(property.buildingYear) : '—' },
     {
       icon: InfoIcon,
-      label: 'Deposit',
-      value: property.leaseTerms?.find((term) => term.toLowerCase().includes('bond')) ?? '—',
+      label: 'Cancellation',
+      value: property.leaseTerms?.find((term) => term.toLowerCase().includes('cancellation')) ?? 'Contact host',
     },
   ];
 
@@ -169,12 +170,12 @@ export default function PropertyDetailPage() {
               <h1>{property.title}</h1>
               <p className="property-detail-location">
                 <MapPinIcon size={14} /> {property.suburb}, {property.state}
-                {property.postcode ? ` ${property.postcode}` : ''}
+                {property.postcode ? ` ${property.postcode}` : ''} · <StarIcon size={13} /> {property.rating.toFixed(2)}
               </p>
             </div>
             <p className="property-detail-rent">
-              ${property.weeklyRent}
-              <span>/ week</span>
+              ${property.pricePerNight}
+              <span>/ night</span>
             </p>
           </div>
 
@@ -318,17 +319,17 @@ export default function PropertyDetailPage() {
 
               {property.nextInspection ? (
                 <div className="next-inspection-card">
-                  <span className="eyebrow">Next Inspection</span>
+                  <span className="eyebrow">Next Check-in Window</span>
                   <p>{property.nextInspection}</p>
-                  <span className="next-inspection-note">By appointment only</span>
+                  <span className="next-inspection-note">Exact check-in details sent after booking</span>
                   <button type="button" className="btn-secondary" onClick={handleCopyInspection}>
-                    {copied ? 'Copied ✓' : 'Copy inspection details'}
+                    {copied ? 'Copied ✓' : 'Copy check-in details'}
                   </button>
                 </div>
               ) : null}
 
               <section className="property-enquire-section">
-                <h2>Enquire about this apartment</h2>
+                <h2>Request to book this stay</h2>
                 <EnquiryForm property={property} />
               </section>
             </div>
@@ -348,7 +349,7 @@ export default function PropertyDetailPage() {
               </p>
             ) : null}
             <a href="#section-availability" className="btn-primary">
-              Enquire About This Apartment
+              Request to Book
             </a>
             <div className="product-detail-sidebar-actions">
               <button
@@ -381,7 +382,7 @@ export default function PropertyDetailPage() {
 
       <div className="property-sticky-enquire">
         <button type="button" className="btn-primary" onClick={() => openEnquiry(property)}>
-          Enquire Now
+          Request to Book
         </button>
       </div>
     </div>

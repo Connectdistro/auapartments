@@ -1,8 +1,12 @@
 import { useMemo, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import PropertyCard from '../components/PropertyCard';
 import CheckboxFilterGroup from '../components/CheckboxFilterGroup';
+import FilterAccordionSection from '../components/FilterAccordionSection';
 import ApartmentsMapPanel from '../components/ApartmentsMapPanel';
+import PageHero from '../components/PageHero';
+import BecomeHost from '../components/BecomeHost';
+import Reveal from '../components/Reveal';
 import { FilterIcon, BellIcon } from '../components/icons';
 import {
   AVAILABILITY_LABEL,
@@ -18,11 +22,12 @@ type FurnishedValue = 'furnished' | 'unfurnished';
 type ViewMode = 'list' | 'map';
 
 const PRICE_MIN = 0;
-const PRICE_MAX = 1600;
-const PRICE_STEP = 20;
+const PRICE_MAX = 500;
+const PRICE_STEP = 10;
 
 const BEDROOM_OPTIONS = [1, 2, 3] as const;
 const BATHROOM_OPTIONS = [1, 2] as const;
+const GUEST_OPTIONS = [1, 2, 4, 6] as const;
 const PROPERTY_TYPE_VALUES: PropertyType[] = ['Apartment', 'Unit', 'Townhouse', 'House'];
 const FURNISHED_VALUES: FurnishedValue[] = ['furnished', 'unfurnished'];
 const AVAILABILITY_VALUES: Availability[] = ['available', 'soon', 'leased'];
@@ -36,6 +41,7 @@ interface FiltersState {
   maxPrice: number;
   bedrooms: number[];
   bathrooms: number[];
+  guests: number[];
   furnished: FurnishedValue[];
   availability: Availability[];
 }
@@ -48,6 +54,7 @@ const DEFAULT_FILTERS: FiltersState = {
   maxPrice: PRICE_MAX,
   bedrooms: [],
   bathrooms: [],
+  guests: [],
   furnished: [],
   availability: [],
 };
@@ -72,6 +79,7 @@ function filtersFromParams(params: URLSearchParams): FiltersState {
         ? BEDROOM_OPTIONS.filter((value) => value >= bedroomThreshold)
         : [],
     bathrooms: [],
+    guests: [],
     furnished: furnishedParam === 'furnished' || furnishedParam === 'unfurnished' ? [furnishedParam] : [],
     availability:
       availabilityParam === 'available' || availabilityParam === 'soon' || availabilityParam === 'leased'
@@ -88,6 +96,11 @@ function matchesBedrooms(count: number, selected: number[]): boolean {
 function matchesBathrooms(count: number, selected: number[]): boolean {
   if (selected.length === 0) return true;
   return selected.some((value) => (value === 2 ? count >= 2 : count === value));
+}
+
+function matchesGuests(maxGuests: number, selected: number[]): boolean {
+  if (selected.length === 0) return true;
+  return selected.some((value) => (value === 6 ? maxGuests >= 6 : maxGuests >= value));
 }
 
 export default function ApartmentsPage() {
@@ -114,9 +127,10 @@ export default function ApartmentsPage() {
         const hay = `${property.suburb} ${property.city} ${property.postcode ?? ''}`.toLowerCase();
         if (!hay.includes(q)) return false;
       }
-      if (property.weeklyRent < applied.minPrice || property.weeklyRent > applied.maxPrice) return false;
+      if (property.pricePerNight < applied.minPrice || property.pricePerNight > applied.maxPrice) return false;
       if (!matchesBedrooms(property.bedrooms, applied.bedrooms)) return false;
       if (!matchesBathrooms(property.bathrooms, applied.bathrooms)) return false;
+      if (!matchesGuests(property.maxGuests, applied.guests)) return false;
       if (applied.propertyType.length > 0 && !applied.propertyType.includes(property.propertyType)) return false;
       if (applied.furnished.length > 0) {
         const wants = applied.furnished.includes('furnished') && applied.furnished.includes('unfurnished');
@@ -132,9 +146,9 @@ export default function ApartmentsPage() {
 
     switch (sort) {
       case 'price-asc':
-        return [...list].sort((a, b) => a.weeklyRent - b.weeklyRent);
+        return [...list].sort((a, b) => a.pricePerNight - b.pricePerNight);
       case 'price-desc':
-        return [...list].sort((a, b) => b.weeklyRent - a.weeklyRent);
+        return [...list].sort((a, b) => b.pricePerNight - a.pricePerNight);
       case 'listed-desc':
         return [...list].sort((a, b) => (a.listedDate < b.listedDate ? 1 : -1));
       case 'availability':
@@ -179,6 +193,12 @@ export default function ApartmentsPage() {
     value,
     label: value === 2 ? '2+ Bathrooms' : `${value} Bathroom`,
     count: PROPERTIES.filter((p) => (value === 2 ? p.bathrooms >= 2 : p.bathrooms === value)).length,
+  }));
+
+  const guestOptions = GUEST_OPTIONS.map((value) => ({
+    value,
+    label: value === 6 ? '6+ Guests' : `${value}+ Guest${value > 1 ? 's' : ''}`,
+    count: PROPERTIES.filter((p) => (value === 6 ? p.maxGuests >= 6 : p.maxGuests >= value)).length,
   }));
 
   const propertyTypeOptions = PROPERTY_TYPE_VALUES.map((value) => ({
@@ -241,6 +261,16 @@ export default function ApartmentsPage() {
       onRemove: () => removeFilter((state) => ({ ...state, bathrooms: [] })),
     });
   }
+  if (applied.guests.length > 0) {
+    pills.push({
+      key: 'guests',
+      label: guestOptions
+        .filter((o) => applied.guests.includes(o.value))
+        .map((o) => o.label)
+        .join(', '),
+      onRemove: () => removeFilter((state) => ({ ...state, guests: [] })),
+    });
+  }
   if (applied.furnished.length > 0) {
     pills.push({
       key: 'furnished',
@@ -265,8 +295,7 @@ export default function ApartmentsPage() {
 
   const filtersPanel = (
     <div className="filters-panel">
-      <div className="filter-group">
-        <span className="filter-label">Location</span>
+      <FilterAccordionSection label="Location">
         <select value={draft.location} onChange={(event) => setDraft((d) => ({ ...d, location: event.target.value }))}>
           <option value="any">Any location</option>
           {cities.map((city) => (
@@ -282,7 +311,7 @@ export default function ApartmentsPage() {
           value={draft.suburbText}
           onChange={(event) => setDraft((d) => ({ ...d, suburbText: event.target.value }))}
         />
-      </div>
+      </FilterAccordionSection>
 
       <CheckboxFilterGroup
         label="Property Type"
@@ -291,10 +320,9 @@ export default function ApartmentsPage() {
         onChange={(next) => setDraft((d) => ({ ...d, propertyType: next }))}
       />
 
-      <div className="filter-group">
-        <span className="filter-label">
-          Price Range: ${draft.minPrice} - {draft.maxPrice >= PRICE_MAX ? `$${PRICE_MAX}+` : `$${draft.maxPrice}`}
-        </span>
+      <FilterAccordionSection
+        label={`Price Range: $${draft.minPrice} - ${draft.maxPrice >= PRICE_MAX ? `$${PRICE_MAX}+` : `$${draft.maxPrice}`}`}
+      >
         <div className="price-range-slider">
           <div
             className="price-range-track-fill"
@@ -328,7 +356,7 @@ export default function ApartmentsPage() {
           <span>${PRICE_MIN}</span>
           <span>${PRICE_MAX}+</span>
         </div>
-      </div>
+      </FilterAccordionSection>
 
       <CheckboxFilterGroup
         label="Bedrooms"
@@ -342,6 +370,13 @@ export default function ApartmentsPage() {
         options={bathroomOptions}
         selected={draft.bathrooms}
         onChange={(next) => setDraft((d) => ({ ...d, bathrooms: next }))}
+      />
+
+      <CheckboxFilterGroup
+        label="Guests"
+        options={guestOptions}
+        selected={draft.guests}
+        onChange={(next) => setDraft((d) => ({ ...d, guests: next }))}
       />
 
       <CheckboxFilterGroup
@@ -369,23 +404,19 @@ export default function ApartmentsPage() {
     </div>
   );
 
+  const resultSummary = `${filtered.length} stay${filtered.length === 1 ? '' : 's'} found${
+    applied.location !== 'any'
+      ? ` in ${locationState ? `${applied.location}, ${locationState}` : applied.location}`
+      : ' across Australia'
+  }`;
+
   return (
     <div className="products-page">
-      <div className="page-hero">
-        <nav className="apartments-breadcrumb" aria-label="Breadcrumb">
-          <Link to="/">Home</Link>
-          <span>/</span>
-          <span>Apartments</span>
-        </nav>
-        <h1>Apartments for Rent</h1>
-        <p>
-          {filtered.length} apartment{filtered.length === 1 ? '' : 's'} found
-          {applied.location !== 'any' ? ` in ${locationState ? `${applied.location}, ${locationState}` : applied.location}` : ' across Australia'}
-        </p>
-      </div>
+      <PageHero eyebrow="Stays" title="Stays in Australia" subtitle={resultSummary} size="large" bgVariant="skyline" />
+      <div className="page-hero-divider" />
 
       {pills.length > 0 ? (
-        <div className="apartments-active-filters apartments-container">
+        <div className="apartments-active-filters page-container">
           {pills.map((pill) => (
             <button key={pill.key} type="button" className="filter-pill" onClick={pill.onRemove}>
               {pill.label} <span aria-hidden="true">×</span>
@@ -397,7 +428,7 @@ export default function ApartmentsPage() {
         </div>
       ) : null}
 
-      <div className="products-page-body apartments-container">
+      <div className="products-page-body page-container">
         <aside className="products-filters-desktop">
           <div className="filters-panel-heading">
             <h3>Filters</h3>
@@ -443,8 +474,8 @@ export default function ApartmentsPage() {
             <select value={sort} onChange={(event) => setSort(event.target.value as SortOption)}>
               <option value="recommended">Recommended</option>
               <option value="listed-desc">Newest listed</option>
-              <option value="price-asc">Rent: Low to high</option>
-              <option value="price-desc">Rent: High to low</option>
+              <option value="price-asc">Price: Low to high</option>
+              <option value="price-desc">Price: High to low</option>
               <option value="availability">Availability</option>
             </select>
 
@@ -465,74 +496,68 @@ export default function ApartmentsPage() {
           {view === 'map' ? (
             <ApartmentsMapPanel properties={filtered} variant="full" />
           ) : (
-            <div className="products-page-list-row">
-              <div className="products-page-list-col">
-                <div className="products-list">
-                  {paged.map((property) => (
-                    <PropertyCard key={property.id} property={property} layout="row" />
-                  ))}
-                </div>
+            <div className="products-page-list-col">
+              <Reveal className="products-list">
+                {paged.map((property) => (
+                  <PropertyCard key={property.id} property={property} layout="row" />
+                ))}
+              </Reveal>
 
-                {filtered.length === 0 ? <p className="products-empty">No apartments match those filters.</p> : null}
+              {filtered.length === 0 ? <p className="products-empty">No apartments match those filters.</p> : null}
 
-                {filtered.length > 0 ? (
-                  <div className="apartments-notify-banner">
-                    <BellIcon size={22} />
-                    <div className="apartments-notify-copy">
-                      <strong>Don't miss out on your perfect apartment</strong>
-                      <p>Save your search and we'll notify you when new apartments match your criteria.</p>
-                    </div>
-                    {searchSaved ? (
-                      <span className="apartments-notify-confirm">Saved ✓</span>
-                    ) : (
-                      <div className="apartments-notify-actions">
-                        <button type="button" className="btn-primary" onClick={() => setSearchSaved(true)}>
-                          Save This Search
-                        </button>
-                        <button type="button" className="apartments-notify-alert" onClick={() => setSearchSaved(true)}>
-                          Create alert →
-                        </button>
-                      </div>
-                    )}
+              {filtered.length > 0 ? (
+                <div className="apartments-notify-banner">
+                  <BellIcon size={22} />
+                  <div className="apartments-notify-copy">
+                    <strong>Don't miss out on your perfect apartment</strong>
+                    <p>Save your search and we'll notify you when new apartments match your criteria.</p>
                   </div>
-                ) : null}
-
-                {pageCount > 1 ? (
-                  <nav className="apartments-pagination" aria-label="Pagination">
-                    <button
-                      type="button"
-                      onClick={() => setPage((p) => Math.max(1, p - 1))}
-                      disabled={safePage === 1}
-                    >
-                      ←
-                    </button>
-                    {Array.from({ length: pageCount }, (_, i) => i + 1).map((n) => (
-                      <button
-                        key={n}
-                        type="button"
-                        className={n === safePage ? 'is-active' : ''}
-                        aria-current={n === safePage}
-                        onClick={() => setPage(n)}
-                      >
-                        {n}
+                  {searchSaved ? (
+                    <span className="apartments-notify-confirm">Saved ✓</span>
+                  ) : (
+                    <div className="apartments-notify-actions">
+                      <button type="button" className="btn-primary" onClick={() => setSearchSaved(true)}>
+                        Save This Search
                       </button>
-                    ))}
-                    <button
-                      type="button"
-                      onClick={() => setPage((p) => Math.min(pageCount, p + 1))}
-                      disabled={safePage === pageCount}
-                    >
-                      →
-                    </button>
-                  </nav>
-                ) : null}
-              </div>
+                      <button type="button" className="apartments-notify-alert" onClick={() => setSearchSaved(true)}>
+                        Create alert →
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : null}
 
-              <ApartmentsMapPanel properties={paged} variant="sidebar" />
+              {pageCount > 1 ? (
+                <nav className="apartments-pagination" aria-label="Pagination">
+                  <button type="button" onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={safePage === 1}>
+                    ←
+                  </button>
+                  {Array.from({ length: pageCount }, (_, i) => i + 1).map((n) => (
+                    <button
+                      key={n}
+                      type="button"
+                      className={n === safePage ? 'is-active' : ''}
+                      aria-current={n === safePage}
+                      onClick={() => setPage(n)}
+                    >
+                      {n}
+                    </button>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={() => setPage((p) => Math.min(pageCount, p + 1))}
+                    disabled={safePage === pageCount}
+                  >
+                    →
+                  </button>
+                </nav>
+              ) : null}
             </div>
           )}
         </div>
       </div>
+
+      <BecomeHost />
 
       {filtersOpen ? (
         <div className="filters-mobile-backdrop" onClick={() => setFiltersOpen(false)}>

@@ -1,64 +1,44 @@
-import { useState, type FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import Reveal from '../components/Reveal';
-import LogoMark from '../components/LogoMark';
-import { PhoneIcon, MailIcon, FacebookIcon, InstagramIcon, LinkedinIcon, ArrowRightIcon } from '../components/icons';
+import { PhoneIcon, MailIcon, ArrowRightIcon, MapPinIcon } from '../components/icons';
 import { CONTACT, SOCIAL_LINKS } from '../data/contact';
 import { getCities } from '../data/properties';
+
+const DISCOVER_LINKS = [
+  { to: '/', label: 'Home' },
+  { to: '/apartments', label: 'Stays' },
+  { to: '/locations', label: 'Explore' },
+  { to: '/host', label: 'Become a Host' },
+  { to: '/about', label: 'About' },
+];
 
 const POLICY_LINKS = [
   { to: '/privacy-policy', label: 'Privacy Policy' },
   { to: '/terms-of-service', label: 'Terms of Service' },
   { to: '/refund-policy', label: 'Refund Policy' },
-  { to: '/shipping-policy', label: 'Shipping Policy' },
   { to: '/cancellation-policy', label: 'Cancellation Policy' },
-  { to: '/contact', label: 'Contact Us' },
 ];
 
 export default function Footer() {
   const cities = getCities();
-  const [subscribed, setSubscribed] = useState(false);
-
-  const handleSubscribe = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setSubscribed(true);
-  };
 
   return (
     <Reveal>
       <footer className="site-footer">
+        <div className="site-footer-blob site-footer-blob-accent" aria-hidden="true" />
+        <div className="site-footer-blob site-footer-blob-dark" aria-hidden="true" />
+
+        <div className="site-footer-hero">
+          <h2>
+            Find your next
+            <br />
+            place to stay<span className="site-footer-dot">.</span>
+          </h2>
+        </div>
+
         <div className="site-footer-columns">
-          <div className="site-footer-brand">
-            <Link to="/" className="site-footer-word">
-              <LogoMark />
-              AuApartments
-            </Link>
-            <p>Premium apartment living in Australia.</p>
-            <div className="site-footer-social">
-              <a href={SOCIAL_LINKS.facebook} target="_blank" rel="noreferrer" aria-label="AuApartments on Facebook">
-                <FacebookIcon size={16} />
-              </a>
-              <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noreferrer" aria-label="AuApartments on Instagram">
-                <InstagramIcon size={16} />
-              </a>
-              <a href={SOCIAL_LINKS.linkedin} target="_blank" rel="noreferrer" aria-label="AuApartments on LinkedIn">
-                <LinkedinIcon size={16} />
-              </a>
-              <a href={`mailto:${CONTACT.email}`} aria-label="Email AuApartments">
-                <MailIcon size={16} />
-              </a>
-            </div>
-          </div>
-
           <div className="site-footer-col">
-            <span className="site-footer-heading">Properties</span>
-            <Link to="/apartments">All Apartments</Link>
-            <Link to="/apartments?availability=available">Available Now</Link>
-            <Link to="/apartments?featured=true">Featured</Link>
-          </div>
-
-          <div className="site-footer-col">
-            <span className="site-footer-heading">Locations</span>
+            <span className="site-footer-heading">Popular Cities</span>
             {cities.map((city) => (
               <Link key={city} to={`/apartments?location=${encodeURIComponent(city)}`}>
                 {city}
@@ -68,35 +48,49 @@ export default function Footer() {
           </div>
 
           <div className="site-footer-col">
-            <span className="site-footer-heading">Contact</span>
+            <span className="site-footer-heading">Discover</span>
+            {DISCOVER_LINKS.map((link) => (
+              <Link key={link.to} to={link.to}>
+                {link.label}
+              </Link>
+            ))}
+          </div>
+
+          <div className="site-footer-col">
+            <span className="site-footer-heading">Get in Touch</span>
             <a href={`tel:${CONTACT.phone}`} className="site-footer-contact-line">
               <PhoneIcon size={15} /> {CONTACT.phoneDisplay}
             </a>
             <a href={`mailto:${CONTACT.email}`} className="site-footer-contact-line">
               <MailIcon size={15} /> {CONTACT.email}
             </a>
-            <span>{CONTACT.city}</span>
+            <a href={SOCIAL_LINKS.linkedin} target="_blank" rel="noreferrer">
+              LinkedIn
+            </a>
+            <span className="site-footer-contact-line">
+              <MapPinIcon size={15} /> {CONTACT.city}
+            </span>
           </div>
 
-          <div className="site-footer-col">
-            <span className="site-footer-heading">Stay Updated</span>
-            <p className="site-footer-newsletter-lead">Subscribe to hear about new apartments and exclusive offers.</p>
-            {subscribed ? (
-              <span className="site-footer-newsletter-confirm">Subscribed ✓</span>
-            ) : (
-              <form className="site-footer-newsletter" onSubmit={handleSubscribe}>
-                <input type="email" required placeholder="Enter your email address" aria-label="Email address" />
-                <button type="submit" aria-label="Subscribe">
-                  <ArrowRightIcon size={16} />
-                </button>
-              </form>
-            )}
+          <div className="site-footer-ctas">
+            <Link to="/apartments" className="site-footer-cta-card">
+              <strong>I want to book</strong>
+              <span>
+                Find your next stay <ArrowRightIcon size={14} />
+              </span>
+            </Link>
+            <Link to="/host" className="site-footer-cta-card">
+              <strong>I want to host</strong>
+              <span>
+                List your place on AUSTAY <ArrowRightIcon size={14} />
+              </span>
+            </Link>
           </div>
         </div>
 
         <div className="site-footer-bottom">
           <span>
-            © {new Date().getFullYear()} AuApartments · {CONTACT.abn}
+            © {new Date().getFullYear()} AUSTAY · {CONTACT.abn}
           </span>
           <nav className="site-footer-policies" aria-label="Policies">
             {POLICY_LINKS.map((link) => (
@@ -106,6 +100,10 @@ export default function Footer() {
             ))}
           </nav>
         </div>
+
+        <a href={`tel:${CONTACT.phone}`} className="site-footer-phone-pill">
+          <PhoneIcon size={16} /> {CONTACT.phoneDisplay}
+        </a>
       </footer>
     </Reveal>
   );

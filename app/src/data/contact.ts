@@ -3,11 +3,11 @@
  * number, email, ABN/ACN, and registered address before this site goes live.
  */
 export const CONTACT = {
-  businessName: 'AuApartments Pty Ltd',
+  businessName: 'AUSTAY Pty Ltd',
   phone: '+61400000000',
   phoneDisplay: '0400 000 000',
-  email: 'hello@auapartments.example',
-  supportEmail: 'support@auapartments.example',
+  email: 'hello@austay.example',
+  supportEmail: 'support@austay.example',
   city: 'Melbourne, VIC, Australia',
   abn: 'ABN 00 000 000 000',
 };
@@ -38,7 +38,7 @@ export const OTHER_OFFICES: OfficeLocation[] = [
 
 /** Placeholder social handles — replace with the real profile URLs before launch. */
 export const SOCIAL_LINKS = {
-  facebook: 'https://facebook.com/auapartments',
-  instagram: 'https://instagram.com/auapartments',
-  linkedin: 'https://linkedin.com/company/auapartments',
+  facebook: 'https://facebook.com/austay',
+  instagram: 'https://instagram.com/austay',
+  linkedin: 'https://linkedin.com/company/austay',
 };

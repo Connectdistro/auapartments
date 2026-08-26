@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import type { Property } from '../data/properties';
-import { formatWeeklyRent } from '../data/properties';
+import { formatNightlyRate } from '../data/properties';
 import EnquiryForm from './EnquiryForm';
 
 interface PropertyEnquiryModalProps {
@@ -46,9 +46,9 @@ export default function PropertyEnquiryModal({ property, onClose }: PropertyEnqu
             {submitted ? null : (
               <>
                 <span className="eyebrow">
-                  {property.title} · {formatWeeklyRent(property.weeklyRent)}
+                  {property.title} · {formatNightlyRate(property.pricePerNight)}
                 </span>
-                <h3>Enquire about this apartment</h3>
+                <h3>Request to book this stay</h3>
               </>
             )}
             <EnquiryForm property={property} onSubmitted={() => setSubmitted(true)} />

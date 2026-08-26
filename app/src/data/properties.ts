@@ -19,7 +19,10 @@ export interface Property {
 
   propertyType: PropertyType;
 
-  weeklyRent: number;
+  pricePerNight: number;
+  maxGuests: number;
+  /** Static seed rating (no review system yet) shown as a star score, e.g. 4.92. */
+  rating: number;
 
   bedrooms: number;
   bathrooms: number;
@@ -92,7 +95,9 @@ export const PROPERTIES: Property[] = [
     state: 'VIC',
     postcode: '3006',
     propertyType: 'Apartment',
-    weeklyRent: 780,
+    pricePerNight: 285,
+    maxGuests: 4,
+    rating: 4.92,
     bedrooms: 2,
     bathrooms: 2,
     parking: 1,
@@ -111,7 +116,7 @@ export const PROPERTIES: Property[] = [
     features: ['Air conditioning', 'Built-in wardrobes', 'Dishwasher', 'Balcony', 'Secure parking', 'Gym access'],
     images: propertyGallery('skyline-luxury-apartment', 'Skyline Luxury Apartment'),
     featured: true,
-    leaseTerms: ['12-month minimum lease', 'Bond: 4 weeks rent', 'No pets'],
+    leaseTerms: ['Minimum stay: 2 nights', 'Free cancellation up to 48 hours before check-in', 'No pets'],
     nearby: [
       { name: 'Southbank Station', type: 'Train', distance: '400m' },
       { name: 'Crown Melbourne', type: 'Entertainment', distance: '600m' },
@@ -127,7 +132,9 @@ export const PROPERTIES: Property[] = [
     state: 'NSW',
     postcode: '2000',
     propertyType: 'Apartment',
-    weeklyRent: 1450,
+    pricePerNight: 450,
+    maxGuests: 6,
+    rating: 4.97,
     bedrooms: 3,
     bathrooms: 2,
     parking: 2,
@@ -146,7 +153,7 @@ export const PROPERTIES: Property[] = [
     features: ['Furnished', 'Air conditioning', 'Dishwasher', 'Balcony', 'Secure parking', 'Pool access', 'Gym access'],
     images: propertyGallery('harbour-views-residences', 'Harbour Views Residences'),
     featured: true,
-    leaseTerms: ['12-month minimum lease', 'Bond: 6 weeks rent'],
+    leaseTerms: ['Minimum stay: 3 nights', 'Free cancellation up to 7 days before check-in'],
     nearby: [
       { name: 'Circular Quay Station', type: 'Train & Ferry', distance: '250m' },
       { name: 'Sydney Opera House', type: 'Landmark', distance: '500m' },
@@ -162,7 +169,9 @@ export const PROPERTIES: Property[] = [
     state: 'QLD',
     postcode: '4006',
     propertyType: 'Apartment',
-    weeklyRent: 520,
+    pricePerNight: 145,
+    maxGuests: 2,
+    rating: 4.85,
     bedrooms: 1,
     bathrooms: 1,
     parking: 1,
@@ -180,7 +189,7 @@ export const PROPERTIES: Property[] = [
     features: ['Built-in wardrobes', 'Dishwasher', 'Secure parking', 'Storage cage'],
     images: propertyGallery('riverside-loft', 'Riverside Loft'),
     featured: true,
-    leaseTerms: ['6 or 12-month lease available', 'Bond: 4 weeks rent'],
+    leaseTerms: ['Minimum stay: 2 nights', 'Self check-in with lockbox'],
     nearby: [
       { name: 'Brunswick Street Station', type: 'Train', distance: '450m' },
       { name: 'James Street precinct', type: 'Shopping', distance: '600m' },
@@ -195,7 +204,9 @@ export const PROPERTIES: Property[] = [
     state: 'VIC',
     postcode: '3002',
     propertyType: 'Apartment',
-    weeklyRent: 650,
+    pricePerNight: 175,
+    maxGuests: 4,
+    rating: 4.88,
     bedrooms: 2,
     bathrooms: 1,
     parking: 1,
@@ -214,7 +225,7 @@ export const PROPERTIES: Property[] = [
     features: ['Air conditioning', 'Built-in wardrobes', 'Dishwasher', 'Secure parking'],
     images: propertyGallery('botanic-gardens-apartment', 'Botanic Gardens Apartment'),
     featured: false,
-    leaseTerms: ['12-month minimum lease', 'Bond: 4 weeks rent', 'Pets considered'],
+    leaseTerms: ['Minimum stay: 2 nights', 'Pets considered'],
     nearby: [
       { name: 'Jolimont Station', type: 'Train', distance: '600m' },
       { name: 'Royal Botanic Gardens', type: 'Park', distance: '150m' },
@@ -229,7 +240,9 @@ export const PROPERTIES: Property[] = [
     state: 'NSW',
     postcode: '2026',
     propertyType: 'Unit',
-    weeklyRent: 480,
+    pricePerNight: 165,
+    maxGuests: 2,
+    rating: 4.9,
     bedrooms: 1,
     bathrooms: 1,
     parking: 0,
@@ -247,7 +260,7 @@ export const PROPERTIES: Property[] = [
     features: ['Furnished', 'Air conditioning', 'Built-in wardrobes'],
     images: propertyGallery('bondi-beach-studio', 'Bondi Beach Studio'),
     featured: false,
-    leaseTerms: ['6-month minimum lease', 'Bond: 4 weeks rent', 'No pets'],
+    leaseTerms: ['Minimum stay: 2 nights', 'Self check-in with lockbox', 'No pets'],
     nearby: [
       { name: 'Bondi Beach', type: 'Beach', distance: '200m' },
       { name: 'Campbell Parade', type: 'Shopping & dining', distance: '250m' },
@@ -262,7 +275,9 @@ export const PROPERTIES: Property[] = [
     state: 'QLD',
     postcode: '4005',
     propertyType: 'Apartment',
-    weeklyRent: 690,
+    pricePerNight: 195,
+    maxGuests: 4,
+    rating: 4.86,
     bedrooms: 2,
     bathrooms: 2,
     parking: 1,
@@ -280,7 +295,7 @@ export const PROPERTIES: Property[] = [
     features: ['Air conditioning', 'Dishwasher', 'Balcony', 'Secure parking', 'Pool access'],
     images: propertyGallery('story-bridge-apartment', 'Story Bridge Apartment'),
     featured: false,
-    leaseTerms: ['12-month minimum lease', 'Bond: 4 weeks rent'],
+    leaseTerms: ['Minimum stay: 2 nights'],
     nearby: [
       { name: 'New Farm Park', type: 'Park', distance: '300m' },
       { name: 'Merthyr Village', type: 'Shopping', distance: '400m' },
@@ -295,7 +310,9 @@ export const PROPERTIES: Property[] = [
     state: 'VIC',
     postcode: '3008',
     propertyType: 'Apartment',
-    weeklyRent: 560,
+    pricePerNight: 155,
+    maxGuests: 2,
+    rating: 4.89,
     bedrooms: 1,
     bathrooms: 1,
     parking: 1,
@@ -314,7 +331,7 @@ export const PROPERTIES: Property[] = [
     features: ['Air conditioning', 'Dishwasher', 'Balcony', 'Secure parking', 'Gym access', 'Pool access'],
     images: propertyGallery('docklands-waterfront', 'Docklands Waterfront'),
     featured: true,
-    leaseTerms: ['12-month minimum lease', 'Bond: 4 weeks rent', 'No pets'],
+    leaseTerms: ['Minimum stay: 2 nights', 'Free cancellation up to 48 hours before check-in', 'No pets'],
     nearby: [
       { name: 'Southern Cross Station', type: 'Train', distance: '900m' },
       { name: 'NewQuay Promenade', type: 'Waterfront dining', distance: '150m' },
@@ -329,7 +346,9 @@ export const PROPERTIES: Property[] = [
     state: 'NSW',
     postcode: '2061',
     propertyType: 'Apartment',
-    weeklyRent: 820,
+    pricePerNight: 225,
+    maxGuests: 4,
+    rating: 4.94,
     bedrooms: 2,
     bathrooms: 1,
     parking: 1,
@@ -348,7 +367,7 @@ export const PROPERTIES: Property[] = [
     features: ['Built-in wardrobes', 'Dishwasher', 'Secure parking'],
     images: propertyGallery('kirribilli-heritage-apartment', 'Kirribilli Heritage Apartment'),
     featured: false,
-    leaseTerms: ['12-month minimum lease', 'Bond: 4 weeks rent'],
+    leaseTerms: ['Minimum stay: 2 nights', 'Free cancellation up to 7 days before check-in'],
     nearby: [
       { name: 'Milsons Point Station', type: 'Train', distance: '500m' },
       { name: 'Sydney Harbour Bridge', type: 'Landmark', distance: '600m' },
@@ -364,8 +383,8 @@ export function getPropertyById(id: string): Property | undefined {
   return PROPERTIES.find((property) => property.id === id);
 }
 
-export function formatWeeklyRent(weeklyRent: number): string {
-  return `$${weeklyRent}/week`;
+export function formatNightlyRate(pricePerNight: number): string {
+  return `$${pricePerNight}/night`;
 }
 
 export function formatListedAgo(listedDate: string): string {
